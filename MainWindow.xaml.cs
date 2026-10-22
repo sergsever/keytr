@@ -20,7 +20,7 @@ namespace Keytr
         public MainWindow()
         {
             InitializeComponent();
-            this.PreviewKeyDown += ((MainVM)(DataContext)).OnKeyDown;
+            this.PreviewTextInput += ((MainVM)(DataContext)).OnKeyDown;
         }
     }
 }
