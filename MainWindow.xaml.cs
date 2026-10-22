@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Keytr.ViewModels;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +20,7 @@ namespace Keytr
         public MainWindow()
         {
             InitializeComponent();
+            this.PreviewKeyDown += ((MainVM)(DataContext)).OnKeyDown;
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Text;
 using System.Timers;
+using System.Windows.Input;
 
 namespace Keytr.ViewModels
 {
@@ -20,6 +21,11 @@ namespace Keytr.ViewModels
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        public void OnKeyDown(object sender, KeyEventArgs keyEventArgs)
+        {
+            Debug.WriteLine("KeyDown: " +  keyEventArgs.Key);
         }
 
         public string? Title { get; set; }
