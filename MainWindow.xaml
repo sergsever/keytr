@@ -8,13 +8,16 @@
         xmlns:views="clr-namespace:Keytr.Views"
         xmlns:viewmodels="clr-namespace:Keytr.ViewModels"
         Title="MainWindow" Height="450" Width="800">
-        <Window.DataContext>
+    <Window.DataContext>
         <viewmodels:MainVM/>
-        </Window.DataContext>
+    </Window.DataContext>
     <Grid>
         <Label Content="{Binding Path=Title, Mode=TwoWay}" Width="150" Height="40" VerticalAlignment="Top" HorizontalAlignment="Center"></Label>
-        <TextBlock Width="60" Height="60" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path=Letter, Mode=TwoWay}" Background="{Binding LetterColor}"/>
 
+        <TextBlock Width="60" Height="60" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Letter}" Background="{Binding LetterColor}"/>
+        <Label Content="{Binding ElapsedTime}" HorizontalAlignment="Left" Margin="28,64,0,0" VerticalAlignment="Top" Width="120" FontSize="18" />
+        <TextBlock HorizontalAlignment="Left" Margin="355,372,0,0" TextWrapping="Wrap" Text="KeyError" VerticalAlignment="Top" Background="{Binding KeyError}"/>
+        <Button Content="Stop" Command="{Binding StopComand}" HorizontalAlignment="Left" Margin="673,388,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
