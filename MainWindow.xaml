@@ -15,9 +15,10 @@
         <Label Content="{Binding Path=Title, Mode=TwoWay}" Width="150" Height="40" VerticalAlignment="Top" HorizontalAlignment="Center"></Label>
 
         <TextBlock Width="60" Height="60" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Letter}" Background="{Binding LetterColor}"/>
-        <Label Content="{Binding ElapsedTime}" HorizontalAlignment="Left" Margin="28,64,0,0" VerticalAlignment="Top" Width="120" FontSize="18" />
-        <TextBlock HorizontalAlignment="Left" Margin="355,372,0,0" TextWrapping="Wrap" Text="KeyError" VerticalAlignment="Top" Background="{Binding KeyError}"/>
+        <Label Content="{Binding ElapsedTime}" HorizontalAlignment="Left" Margin="28,64,0,0" VerticalAlignment="Top" Width="150" FontSize="18" />
+        <TextBlock HorizontalAlignment="Left" Margin="340,348,0,0" TextWrapping="Wrap" Text="{Binding ErrorLetter}" Height="60" Width="60" FontSize="18" VerticalAlignment="Top" Background="{Binding KeyError}" RenderTransformOrigin="0.675,0.178"/>
         <Button Content="Stop" Command="{Binding StopComand}" HorizontalAlignment="Left" Margin="673,388,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="49,303,0,0" TextWrapping="Wrap" Text="{Binding Entered}" VerticalAlignment="Top" Width="716"/>
 
     </Grid>
 </Window>

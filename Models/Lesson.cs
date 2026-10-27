@@ -21,7 +21,7 @@ public class NextLetterFromString : NextLetterStrategy
 
 public class NextLetterRandom : NextLetterStrategy
 {
-    private readonly string letters = "abcdefghijklmnopqrstuvwxyz";
+    private readonly string letters = "aliops;mxz";
     public char NextLetter()
     {
         var random = new Random();

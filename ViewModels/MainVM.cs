@@ -36,11 +36,13 @@ namespace Keytr.ViewModels
 
 
         public string? Letter { get; set; }
+        public string? ErrorLetter { get; set; }
 
         public SolidColorBrush LetterColor { get; set; }
 
         public SolidColorBrush KeyError { get; set; }
         public string? ElapsedTime { get; set; }
+        public string? Entered {  get; set; }
 
         private TrainModel _trainModel;
         private DateTime _start;
@@ -51,6 +53,7 @@ namespace Keytr.ViewModels
 
         private System.Timers.Timer _timer;
         private int _countletters = 0;
+        private string _entered = "";
         private readonly Dictionary<string, SolidColorBrush> _errcolors = new Dictionary<string, SolidColorBrush>()
         {
             {"white", new SolidColorBrush(Colors.White) },
@@ -81,6 +84,7 @@ namespace Keytr.ViewModels
         public void OnKeyDown(object sender, TextCompositionEventArgs args)
         {
             Debug.WriteLine("KeyDown: " + args.Text);
+            
 
 
 
@@ -91,13 +95,26 @@ namespace Keytr.ViewModels
                 this._timePerLetter += (this._startLetter - DateTime.Now);
 
                 LetterColor = _errcolors["green"];//new SolidColorBrush(Colors.Green);
+                this._entered += args.Text;
+                if (_entered.Length > 150)
+                {
+                    _entered = _entered.Substring(_entered.Length - 5);
+                }
+                this.Entered = this._entered;
+                OnPropertyChanged("Entered");
                 KeyError = _errcolors["green"];
                 OnPropertyChanged("KeyError");
+                ErrorLetter = "";
+                OnPropertyChanged("ErrorLetter");
+                Letter = "";
+                OnPropertyChanged("Letter");
             }
             else
             {
+                ErrorLetter = args.Text;
                 KeyError = _errcolors["red"];
                 OnPropertyChanged("KeyError");
+                OnPropertyChanged("ErrorLetter");
                 if (this._errors.ContainsKey(this.Letter))
                 {
                     this._errors[this.Letter]++;
@@ -122,6 +139,7 @@ namespace Keytr.ViewModels
 
             private void Stop() {
                 this._timer.Enabled = false;
+
             }
         
 
