@@ -14,4 +14,14 @@
     <PackageReference Include="System.Runtime" Version="4.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="lessons\wols.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="LessonsConfigurationSection.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
 </Project>

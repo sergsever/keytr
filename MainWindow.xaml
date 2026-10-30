@@ -7,18 +7,26 @@
         xmlns:local="clr-namespace:Keytr"
         xmlns:views="clr-namespace:Keytr.Views"
         xmlns:viewmodels="clr-namespace:Keytr.ViewModels"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="480" Width="800">
     <Window.DataContext>
         <viewmodels:MainVM/>
     </Window.DataContext>
-    <Grid>
+    <Grid Margin="0,0,0,0">
         <Label Content="{Binding Path=Title, Mode=TwoWay}" Width="150" Height="40" VerticalAlignment="Top" HorizontalAlignment="Center"></Label>
 
         <TextBlock Width="60" Height="60" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Letter}" Background="{Binding LetterColor}"/>
-        <Label Content="{Binding ElapsedTime}" HorizontalAlignment="Left" Margin="28,64,0,0" VerticalAlignment="Top" Width="150" FontSize="18" />
+        <Label HorizontalAlignment="Left" Margin="28,64,0,0" VerticalAlignment="Top" Width="150" FontSize="18" >
+            <Label Content="Lessons"/>
+        </Label>
         <TextBlock HorizontalAlignment="Left" Margin="340,348,0,0" TextWrapping="Wrap" Text="{Binding ErrorLetter}" Height="60" Width="60" FontSize="18" VerticalAlignment="Top" Background="{Binding KeyError}" RenderTransformOrigin="0.675,0.178"/>
-        <Button Content="Stop" Command="{Binding StopComand}" HorizontalAlignment="Left" Margin="673,388,0,0" VerticalAlignment="Top"/>
+        <Button Content="Start/Stop" Command="{Binding StopComand}" HorizontalAlignment="Left" Margin="675,363,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.534,-1.462" Width="102" Height="40"/>
         <TextBox HorizontalAlignment="Left" Margin="49,303,0,0" TextWrapping="Wrap" Text="{Binding Entered}" VerticalAlignment="Top" Width="716"/>
+        <Label Content="Time per letter:" HorizontalAlignment="Left" Margin="28,390,0,0" VerticalAlignment="Top"/>
+        <Label Content="Errors:" HorizontalAlignment="Left" Margin="277,398,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="118,398,0,0" TextWrapping="Wrap" Text="{Binding PerLetterTime}" FontSize="18" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Center" Margin="0,403,0,0" TextWrapping="Wrap" Text="{Binding Errors}" FontSize="18" VerticalAlignment="Top" Width="120"/>
+        <ListBox ItemsSource="{Binding Lessons}" Margin="28,113,597,202"/>
+        <TextBox HorizontalAlignment="Left" Margin="576,113,0,0" TextWrapping="Wrap" Text="{Binding ElapsedTime}" VerticalAlignment="Top" Width="120"/>
 
     </Grid>
 </Window>

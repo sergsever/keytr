@@ -43,6 +43,9 @@ namespace Keytr.ViewModels
         public SolidColorBrush KeyError { get; set; }
         public string? ElapsedTime { get; set; }
         public string? Entered {  get; set; }
+        public string? PerLetterTime {  get; set; }
+        public string? Errors { get; set; }
+        public List<string> Lessons { get; set; }
 
         private TrainModel _trainModel;
         private DateTime _start;
@@ -54,6 +57,7 @@ namespace Keytr.ViewModels
         private System.Timers.Timer _timer;
         private int _countletters = 0;
         private string _entered = "";
+
         private readonly Dictionary<string, SolidColorBrush> _errcolors = new Dictionary<string, SolidColorBrush>()
         {
             {"white", new SolidColorBrush(Colors.White) },
@@ -92,7 +96,7 @@ namespace Keytr.ViewModels
             //Debug.WriteLine(@"Key equal: ", equal);
             if (this.Letter.Equals(args.Text))
             {
-                this._timePerLetter += (this._startLetter - DateTime.Now);
+                this._timePerLetter += (DateTime.Now - _startLetter);
 
                 LetterColor = _errcolors["green"];//new SolidColorBrush(Colors.Green);
                 this._entered += args.Text;
@@ -138,7 +142,18 @@ namespace Keytr.ViewModels
             public ICommand StopComand{ get;}
 
             private void Stop() {
+            if (this._timer.Enabled)
+            {
                 this._timer.Enabled = false;
+            }
+            else
+            {
+                _timer.Enabled = true;
+            }
+            this.PerLetterTime =  _countletters == 0 ? "0" : (_timePerLetter / _countletters).Seconds.ToString();
+            OnPropertyChanged("PerLetterTime");
+            this.Errors = _errors.Sum(e => e.Value).ToString();
+            OnPropertyChanged("Errors");
 
             }
         
@@ -150,18 +165,15 @@ namespace Keytr.ViewModels
             this._countletters = 0;
             this._letterCount = 0;
             this.KeyError = _errcolors["green"];
-            _trainModel = new TrainModel();
-            this._trainModel.LoadLesson("Random");
             this.Title = "Random";
             this.OnPropertyChanged("Title");
-            this.Letter = _trainModel.NextLetter().ToString();
-            int pause = int.Parse(ConfigurationManager.AppSettings["Pause"]);
-            this._count = int.Parse(ConfigurationManager.AppSettings["Repeat"]);
+            int pause = 5;// int.Parse(ConfigurationManager.AppSettings["Pause"]);
+            this._count = 3;// int.Parse(ConfigurationManager.AppSettings["Repeat"]);
             this._timer = new System.Timers.Timer(pause * 1000);
 
             this._timer.Elapsed += Tick;
             _timer.AutoReset = true;
-            _timer.Enabled = true;
+            //_timer.Enabled = true;
             this.StopComand = new RelayCommand(Stop);
             this.LetterColor = _errcolors["white"];
             //this.LetterColor.Freeze();
@@ -170,6 +182,29 @@ namespace Keytr.ViewModels
             _start = DateTime.Now;
 
             OnPropertyChanged("TrainModel");
+            /*lessons*/
+            Lessons = new List<string>();
+            LessonsConfigurationSection lessons = (LessonsConfigurationSection)ConfigurationManager.GetSection("lessonsSection");
+            Debug.WriteLine("Lessons: " + lessons == null ? "Null": lessons);
+
+            foreach (LessonElement lesson in lessons.LessonItems)
+            {
+                Debug.WriteLine("Lesson: " + lesson.LessonType + ", " + lesson.Path);
+                Lessons.Add(lesson.Path);
+            }
+
+            OnPropertyChanged("Lessons");
+
+
+
+
+            _trainModel = new TrainModel();
+            this._trainModel.LoadLesson("Random");
+
+            //this.Letter = _trainModel.NextLetter().ToString();
+
+
+
         }
     }
 }

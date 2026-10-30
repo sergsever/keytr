@@ -29,9 +29,9 @@ namespace Keytr.Models
 
         public void LoadLesson(string name)
         {
-            var path = ConfigurationManager.AppSettings["Path"];
+            //var path =  ConfigurationManager.GetSection("lessons");
 
-            if (path.Equals("random"))
+            if (name.Equals("Random"))
             {
                 this.type = LessonType.Random;
                 nextletter = new NextLetterRandom();
@@ -39,7 +39,7 @@ namespace Keytr.Models
             else
             {
                 this.type = LessonType.Text;
-                this.nextletter = new NextLetterFromString(path);
+               // this.nextletter = new NextLetterFromString();
             }
             this.Letter = nextletter.NextLetter();
         }
