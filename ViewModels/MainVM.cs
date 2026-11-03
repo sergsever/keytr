@@ -47,6 +47,20 @@ namespace Keytr.ViewModels
         public string? Errors { get; set; }
         public List<string> Lessons { get; set; }
 
+        public ICommand StopComand { get; }
+
+        public int SelectedLesson
+        {
+            get { return _selectedLesson; }
+            set
+            {
+                if (_selectedLesson != value) {
+                    _selectedLesson = value;
+                    OnSeelectedLessonChanged(_selectedLesson);
+                }
+            }
+        } 
+
         private TrainModel _trainModel;
         private DateTime _start;
         private DateTime _startLetter;
@@ -57,6 +71,7 @@ namespace Keytr.ViewModels
         private System.Timers.Timer _timer;
         private int _countletters = 0;
         private string _entered = "";
+        private int _selectedLesson = 0;
 
         private readonly Dictionary<string, SolidColorBrush> _errcolors = new Dictionary<string, SolidColorBrush>()
         {
@@ -139,7 +154,7 @@ namespace Keytr.ViewModels
             }
         }
 
-            public ICommand StopComand{ get;}
+            
 
             private void Stop() {
             if (this._timer.Enabled)
@@ -156,6 +171,18 @@ namespace Keytr.ViewModels
             OnPropertyChanged("Errors");
 
             }
+
+        private void OnSeelectedLessonChanged(int index)
+        {
+            if (_timer.Enabled)
+            {
+                _timer.Enabled = false;
+            }
+            string lesson = Lessons[index];
+            _trainModel = new TrainModel();
+            _trainModel.LoadLesson(lesson);
+
+        }
         
 
         //public TrainVM TrainModel { get; set; }

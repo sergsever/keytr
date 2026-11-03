@@ -25,7 +25,7 @@
         <Label Content="Errors:" HorizontalAlignment="Left" Margin="277,398,0,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Margin="118,398,0,0" TextWrapping="Wrap" Text="{Binding PerLetterTime}" FontSize="18" VerticalAlignment="Top" Width="120"/>
         <TextBox HorizontalAlignment="Center" Margin="0,403,0,0" TextWrapping="Wrap" Text="{Binding Errors}" FontSize="18" VerticalAlignment="Top" Width="120"/>
-        <ListBox ItemsSource="{Binding Lessons}" Margin="28,113,597,202"/>
+        <ListBox ItemsSource="{Binding Lessons}" SelectedIndex="{Binding Path=SelectedLesson, Mode=TwoWay}" Margin="28,113,597,202"/>
         <TextBox HorizontalAlignment="Left" Margin="576,113,0,0" TextWrapping="Wrap" Text="{Binding ElapsedTime}" VerticalAlignment="Top" Width="120"/>
 
     </Grid>

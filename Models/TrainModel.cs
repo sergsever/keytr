@@ -19,7 +19,7 @@ namespace Keytr.Models
 
         public char NextLetter()
         {
-            return nextletter.NextLetter();
+            return nextletter.NextLetter("",0);
         }
         public string Name { get; set; }
         public List<char> Letters { get; set; }
@@ -40,8 +40,10 @@ namespace Keytr.Models
             {
                 this.type = LessonType.Text;
                // this.nextletter = new NextLetterFromString();
+               string text = File.ReadAllText(name);
+                this.nextletter = new NextLetterFromString(text, 0);
             }
-            this.Letter = nextletter.NextLetter();
+            this.Letter = nextletter.NextLetter("",0);
         }
     }
 }
