@@ -19,7 +19,7 @@ namespace Keytr.Models
 
         public char NextLetter()
         {
-            return nextletter.NextLetter();
+            return nextletter.NextLetter("",0);
         }
         public string Name { get; set; }
         public List<char> Letters { get; set; }
@@ -29,9 +29,9 @@ namespace Keytr.Models
 
         public void LoadLesson(string name)
         {
-            var path = ConfigurationManager.AppSettings["Path"];
+            //var path =  ConfigurationManager.GetSection("lessons");
 
-            if (path.Equals("random"))
+            if (name.Equals("Random"))
             {
                 this.type = LessonType.Random;
                 nextletter = new NextLetterRandom();
@@ -39,9 +39,11 @@ namespace Keytr.Models
             else
             {
                 this.type = LessonType.Text;
-                this.nextletter = new NextLetterFromString(path);
+               // this.nextletter = new NextLetterFromString();
+               string text = File.ReadAllText(name);
+                this.nextletter = new NextLetterFromString(text, 0);
             }
-            this.Letter = nextletter.NextLetter();
+            this.Letter = nextletter.NextLetter("",0);
         }
     }
 }
