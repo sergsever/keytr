@@ -66,12 +66,14 @@ namespace Keytr.ViewModels
         private DateTime _startLetter;
         private TimeSpan _timePerLetter = TimeSpan.FromMilliseconds(0);
         private int _count = 0;
+        private int _pause = 0;
         private int _letterCount = 0;
 
         private System.Timers.Timer _timer;
         private int _countletters = 0;
         private string _entered = "";
         private int _selectedLesson = 0;
+        private bool _isInProcess = false;
 
         private readonly Dictionary<string, SolidColorBrush> _errcolors = new Dictionary<string, SolidColorBrush>()
         {
@@ -80,53 +82,59 @@ namespace Keytr.ViewModels
             {"red", new SolidColorBrush(Colors.Red) } };
         private Dictionary<string, int> _errors= new Dictionary<string, int>();
 
+        private Lock changeLetter = new Lock();
+
         public void Tick(object? sender, EventArgs e)
         {
-            if (KeyError == _errcolors["green"] || this._letterCount >= _count)
+            changeLetter.Enter();
+            if (!_isInProcess)
             {
                 this.Letter = _trainModel.NextLetter().ToString();
                 Debug.WriteLine("Letter: " +  this.Letter);
                 this.OnPropertyChanged("Letter");
+                _isInProcess = true;
                 this._countletters++;
             }
             this.LetterColor = this._errcolors["white"];
+            OnPropertyChanged("LetterColor");
             //this.LetterColor.Freeze();
             this.OnPropertyChanged("LetterColor");
+            this.KeyError = _errcolors["green"];
+            OnPropertyChanged("KeyError");
+
             this._startLetter = DateTime.Now;
             this._letterCount = 0;
             var stop = DateTime.Now;
             TimeSpan elapsed = stop - _start;
             ElapsedTime = "Время: " + elapsed.ToString(@"hh\:mm\:ss");
             OnPropertyChanged("ElapsedTime");
+            changeLetter.Exit();
         }
 
         public void OnKeyDown(object sender, TextCompositionEventArgs args)
         {
             Debug.WriteLine("KeyDown: " + args.Text);
-            
-
-
-
-            var equal = (this.Letter.ToLower() == args.Text.ToLower());//this.Letter.ToUpper().Equals(keyEventArgs.Key);
+            //var equal = (this.Letter.ToLower() == args.Text.ToLower());//this.Letter.ToUpper().Equals(keyEventArgs.Key);
             //Debug.WriteLine(@"Key equal: ", equal);
             if (this.Letter.Equals(args.Text))
             {
+                _isInProcess = false;
                 this._timePerLetter += (DateTime.Now - _startLetter);
 
-                LetterColor = _errcolors["green"];//new SolidColorBrush(Colors.Green);
+                KeyError = _errcolors["green"];//new SolidColorBrush(Colors.Green);
                 this._entered += args.Text;
                 if (_entered.Length > 150)
                 {
                     _entered = _entered.Substring(_entered.Length - 5);
                 }
-                this.Entered = this._entered;
+                Entered = _entered;
                 OnPropertyChanged("Entered");
-                KeyError = _errcolors["green"];
-                OnPropertyChanged("KeyError");
-                ErrorLetter = "";
-                OnPropertyChanged("ErrorLetter");
-                Letter = "";
-                OnPropertyChanged("Letter");
+
+
+
+                
+                this.Tick(null,null);
+                
             }
             else
             {
@@ -148,10 +156,12 @@ namespace Keytr.ViewModels
                 }
                 else
                 {
+                    _isInProcess = false;
                     LetterColor = _errcolors["red"]; //new SolidColorBrush(Colors.Red);
                 }
-                this.OnPropertyChanged("LetterColor");
+                this.OnPropertyChanged("KeyError");
             }
+            //changeLetter.Exit();
         }
 
             
@@ -165,7 +175,7 @@ namespace Keytr.ViewModels
             {
                 _timer.Enabled = true;
             }
-            this.PerLetterTime =  _countletters == 0 ? "0" : (_timePerLetter / _countletters).Seconds.ToString();
+            this.PerLetterTime =  _countletters == 0 ? "0" : (_timePerLetter / _countletters).TotalSeconds.ToString("0.00");
             OnPropertyChanged("PerLetterTime");
             this.Errors = _errors.Sum(e => e.Value).ToString();
             OnPropertyChanged("Errors");
@@ -194,13 +204,13 @@ namespace Keytr.ViewModels
             this.KeyError = _errcolors["green"];
             this.Title = "Random";
             this.OnPropertyChanged("Title");
-            int pause = 5;// int.Parse(ConfigurationManager.AppSettings["Pause"]);
+            _pause = 5;// int.Parse(ConfigurationManager.AppSettings["Pause"]);
             this._count = 3;// int.Parse(ConfigurationManager.AppSettings["Repeat"]);
-            this._timer = new System.Timers.Timer(pause * 1000);
+            this._timer = new System.Timers.Timer(_pause * 1000);
 
             this._timer.Elapsed += Tick;
             _timer.AutoReset = true;
-            //_timer.Enabled = true;
+            _timer.Enabled = true;
             this.StopComand = new RelayCommand(Stop);
             this.LetterColor = _errcolors["white"];
             //this.LetterColor.Freeze();
