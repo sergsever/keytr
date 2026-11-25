@@ -42,7 +42,7 @@ namespace Keytr.ViewModels
         {
             this._trainModel = new TrainModel();
 
-            this._trainModel.LoadLesson("Random");
+            //this._trainModel.LoadLesson("Random", );
             int pause = int.Parse(ConfigurationManager.AppSettings["Pause"]);
             this._timer = new System.Timers.Timer(pause * 1000);
             this._timer.Elapsed += Tick;
@@ -52,7 +52,7 @@ namespace Keytr.ViewModels
 
             
             this.Title = "Random";
-            this.Letter = _trainModel.NextLetter().ToString();
+            //this.Letter = _trainModel.NextLetter().ToString();
             OnPropertyChanged("CurrentLetter");
         }
     }

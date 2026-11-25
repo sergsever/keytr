@@ -27,23 +27,27 @@ namespace Keytr.Models
         public int Repeat { get; set; }
         public char Letter { get; set; }
 
-        public void LoadLesson(string name)
+        public void LoadLesson(string name, LangHelper.Languages lang)
         {
             //var path =  ConfigurationManager.GetSection("lessons");
 
             if (name.Equals("Random"))
             {
+
                 this.type = LessonType.Random;
-                nextletter = new NextLetterRandom();
+                if (lang == LangHelper.Languages.Russian)
+                    nextletter = new NextLetterRandomRus();
+                else
+                    nextletter = new NextLetterRandomEng();
             }
             else
             {
+
                 this.type = LessonType.Text;
-               // this.nextletter = new NextLetterFromString();
-               string text = File.ReadAllText(name);
+                //this.nextletter = new NextLetterFromString();
+                string text = File.ReadAllText(name);
                 this.nextletter = new NextLetterFromString(text, 0);
             }
-            this.Letter = nextletter.NextLetter("",0);
         }
     }
 }

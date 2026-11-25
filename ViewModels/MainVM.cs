@@ -74,6 +74,8 @@ namespace Keytr.ViewModels
         private string _entered = "";
         private int _selectedLesson = 0;
         private bool _isInProcess = false;
+        private LangHelper.Languages _lang;
+
 
         private readonly Dictionary<string, SolidColorBrush> _errcolors = new Dictionary<string, SolidColorBrush>()
         {
@@ -129,10 +131,6 @@ namespace Keytr.ViewModels
                 }
                 Entered = _entered;
                 OnPropertyChanged("Entered");
-
-
-
-                
                 this.Tick(null,null);
                 
             }
@@ -190,7 +188,7 @@ namespace Keytr.ViewModels
             }
             string lesson = Lessons[index];
             _trainModel = new TrainModel();
-            _trainModel.LoadLesson(lesson);
+            _trainModel.LoadLesson(lesson, _lang);
 
         }
         
@@ -201,16 +199,28 @@ namespace Keytr.ViewModels
             this._count = 0;
             this._countletters = 0;
             this._letterCount = 0;
+            _trainModel = new TrainModel();
             this.KeyError = _errcolors["green"];
+            var lang = LangHelper.GetKeyboardLayout();
+            if (lang == ((ushort)LangHelper.Languages.English))
+            {
+                _lang = LangHelper.Languages.English;
+                Debug.WriteLine("Lang:English");
+                this._trainModel.LoadLesson("Random", LangHelper.Languages.English);
+
+            }
+            else
+            {
+                _lang = LangHelper.Languages.Russian;
+                Debug.WriteLine("Lang: Russian");
+                this._trainModel.LoadLesson("Random", LangHelper.Languages.Russian);
+                
+            }
             this.Title = "Random";
             this.OnPropertyChanged("Title");
             _pause = 5;// int.Parse(ConfigurationManager.AppSettings["Pause"]);
             this._count = 3;// int.Parse(ConfigurationManager.AppSettings["Repeat"]);
-            this._timer = new System.Timers.Timer(_pause * 1000);
-
-            this._timer.Elapsed += Tick;
-            _timer.AutoReset = true;
-            _timer.Enabled = true;
+            
             this.StopComand = new RelayCommand(Stop);
             this.LetterColor = _errcolors["white"];
             //this.LetterColor.Freeze();
@@ -231,17 +241,12 @@ namespace Keytr.ViewModels
             }
 
             OnPropertyChanged("Lessons");
+            /*Timer*/
+            this._timer = new System.Timers.Timer(_pause * 1000);
 
-
-
-
-            _trainModel = new TrainModel();
-            this._trainModel.LoadLesson("Random");
-
-            //this.Letter = _trainModel.NextLetter().ToString();
-
-
-
+            this._timer.Elapsed += Tick;
+            _timer.AutoReset = true;
+            _timer.Enabled = true;
         }
     }
 }

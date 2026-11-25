@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Text;
 
 public interface NextLetterStrategy
@@ -48,4 +49,70 @@ public class NextLetterRandom : NextLetterStrategy
 
     }
 }
+
+public class NextLetterRandomRus : NextLetterStrategy
+{
+    private string _letters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+    public char NextLetter(string lesson, int pos)
+    {
+        var random = new Random();
+        return _letters[random.Next(_letters.Length)];
+
+    }
+
+    public NextLetterRandomRus() { }
+}
+    public class Lesson
+    {
+        public string Title { get; set; }
+        public int Pause { get; set; }
+        public int Repeate { get; set; }
+
+    }
+
+    
+
+    public class NextLetterRandomEng : NextLetterStrategy
+    {
+        private string _letters = "";
+        public char NextLetter(string lesson, int pos)
+        {
+            var random = new Random();
+            return _letters[random.Next(_letters.Length)];
+
+        }
+        public class Lesson
+        {
+            public string Title { get; set; }
+            public int Pause { get; set; }
+            public int Repeate { get; set; }
+
+        }
+
+        public NextLetterRandomEng()
+        {
+            this._letters = "abcdefghijklmnopqrstuvqxyz";
+
+            Debug.WriteLine("Letters: " + this._letters);
+        }
+    }
+
+        public class NextLetterRandomEn : NextLetterStrategy
+    {
+        private string _letters = "";
+        public NextLetterRandomEn()
+        {
+            this._letters = "abcdefghijklmnopqrstuvqxyz";
+
+            Debug.WriteLine("Letters: " + this._letters);
+
+        }
+
+        public char NextLetter(string lesson, int pos)
+        {
+            var random = new Random();
+            return _letters[random.Next(_letters.Length)];
+        }
+    }
+
 
