@@ -175,7 +175,7 @@ namespace Keytr.ViewModels
             }
             this.PerLetterTime =  _countletters == 0 ? "0" : (_timePerLetter / _countletters).TotalSeconds.ToString("0.00");
             OnPropertyChanged("PerLetterTime");
-            this.Errors = _errors.Sum(e => e.Value).ToString();
+            this.Errors = _errors.Sum(e => e.Value).ToString() + "/" + _countletters.ToString() + " : " + Math.Floor((Math.Ceiling((double)(_errors.Sum(e => e.Value))) / _countletters) * 100).ToString() + "%";
             OnPropertyChanged("Errors");
 
             }
