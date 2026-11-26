@@ -162,6 +162,8 @@ namespace Keytr.ViewModels
             //changeLetter.Exit();
         }
 
+        
+
             
 
             private void Stop() {

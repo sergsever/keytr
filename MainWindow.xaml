@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Keytr"
         xmlns:viewmodels="clr-namespace:Keytr.ViewModels"
-        Title="MainWindow" Height="480" Width="800">
+        Title="MainWindow" Height="480" Width="800" PreviewKeyDown="OnPreviewKeyDown">
     <Window.DataContext>
         <viewmodels:MainVM/>
     </Window.DataContext>

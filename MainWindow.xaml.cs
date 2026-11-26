@@ -17,6 +17,14 @@ namespace Keytr
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        public void OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab || e.Key == Key.CapsLock)
+            {
+                e.Handled = true;
+            }
+        }
         public MainWindow()
         {
             InitializeComponent();
